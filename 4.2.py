@@ -1,8 +1,27 @@
 #!python
-from helpers import iter_input, passport, iter_test
+from helpers import iter_input, iter_test
 from re import search
 
-class passportEnh(passport):
+class passport():
+
+    def __init__(self, rawpassport):
+        from re import search
+        try:
+            self.Birth_Year = int(search(r"(?<=byr:)(.*?)(=?\s)", rawpassport).group(1))
+            self.Issue_Year = int(search(r"(?<=iyr:)(.*?)(=?\s)", rawpassport).group(1))
+            self.Expiration_Year = int(search(r"(?<=eyr:)(.*?)(=?\s)", rawpassport).group(1))
+            self.Height = search(r"(?<=hgt:)(.*?)(=?\s)", rawpassport).group(1)
+            self.Hair_Color = search(r"(?<=hcl:)(.*?)(=?\s)", rawpassport).group(1)
+            self.Eye_Color = search(r"(?<=ecl:)(.*?)(=?\s)", rawpassport).group(1)
+            self.Passport_ID = search(r"(?<=pid:)(.*?)((=?\s)|(=?$))", rawpassport).group(1)
+            # try:
+            #     self.Country_ID = search(r"(?<=cid:)(.*?)(=?\s)", rawpassport).group(1)
+            # except AttributeError:
+            #     pass
+            self.invalid = False
+        except AttributeError:
+            self.invalid = True
+        self.rawpassport = rawpassport.replace("\n", "")
 
     def validate(self):
         try:
@@ -17,6 +36,8 @@ class passportEnh(passport):
             ):
                 return True
             else:
+                print(f'{self.rawpassport}')
+                print(f"{self.validateIssueYear()}, {self.validateExpYear()}, {self.validateHeight()}, {self.validateHairColor()}, {self.validateEyeColor()}, {self.validatePID()}")
                 return False
         except Exception:
             return False
@@ -32,13 +53,13 @@ class passportEnh(passport):
         return False
 
     def validateBirthYear(self):
-        return 1920 <= int(self.Birth_Year) <= 2002
+        return 1920 <= self.Birth_Year <= 2002
 
     def validateIssueYear(self):
-        return 2010 <= int(self.Issue_Year) <= 2020
+        return 2010 <= self.Issue_Year <= 2020
 
     def validateExpYear(self):
-        return 2010 <= int(self.Expiration_Year) <= 2030
+        return 2010 <= self.Expiration_Year <= 2030
 
     def validateHairColor(self):
         try:
@@ -48,7 +69,7 @@ class passportEnh(passport):
             return False
 
     def validateEyeColor(self):
-        return self.Eye_Color in ['amb', 'blu', 'brn', 'gry', 'grn', 'hzl']
+        return self.Eye_Color in ['amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth']
 
     def validatePID(self):
         try:
@@ -60,16 +81,16 @@ class passportEnh(passport):
 
 passportraw = ''
 count = 0
-for line in iter_test():
+for line in iter_input(4):
     if line == '\n':
-        pport = passportEnh(passportraw)
+        pport = passport(passportraw)
         if pport.validate():
             count += 1
         passportraw = ''
     else:
         passportraw += f' {line}'
 else:
-    pport = passportEnh(passportraw)
+    pport = passport(passportraw)
     if pport.validate():
         count += 1
     passportraw = ''

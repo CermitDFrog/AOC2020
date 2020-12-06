@@ -1,6 +1,50 @@
 #!python
 
 def iter_input(day: int):
+    for line in _iter_webdata(day):
+        yield line.strip('\n')
+
+def iter_group(day: int):
+    groupraw = ''
+    for line in _iter_webdata(day):
+        if line == '\n':
+            replace = groupraw
+            groupraw = ''
+            yield replace
+        else:
+            # line = line.replace("\n", "")
+            groupraw += f'{line}'
+    else:
+        yield groupraw
+
+
+def iter_test():
+    for line in _iter_file():
+        yield line
+
+
+def iter_group_test():
+    groupraw = ''
+    for line in _iter_file():
+        if line == '\n':
+            replace = groupraw
+            groupraw = ''
+            yield replace
+        else:
+            # line = line.replace("\n", "")
+            groupraw += line
+    yield groupraw
+
+
+def _iter_file():
+    from os import path as ospath
+    from sys import path as syspath
+
+    with open(ospath.join(syspath[0], 'testdata'), 'r') as file:
+        for line in file:
+            yield line
+
+def _iter_webdata(day: int):
     import requests
     import browser_cookie3
     from io import StringIO
@@ -9,46 +53,3 @@ def iter_input(day: int):
 
     for line in inputdata:
         yield line
-
-
-def iter_test():
-    from os import path as ospath
-    from sys import path as syspath
-
-    with open(ospath.join(syspath[0], 'testdata'), 'r') as file:
-        for line in file:
-            yield line
-
-class passport():
-
-    def __init__(self, rawpassport):
-        from re import search
-        try:
-            self.Birth_Year = search(r"(?<=byr:)(.*?)(=?\s)", rawpassport).group(1)
-            self.Issue_Year = search(r"(?<=iyr:)(.*?)(=?\s)", rawpassport).group(1)
-            self.Expiration_Year = search(r"(?<=eyr:)(.*?)(=?\s)", rawpassport).group(1)
-            self.Height = search(r"(?<=hgt:)(.*?)(=?\s)", rawpassport).group(1)
-            self.Hair_Color = search(r"(?<=hcl:)(.*?)(=?\s)", rawpassport).group(1)
-            self.Eye_Color = search(r"(?<=ecl:)(.*?)(=?\s)", rawpassport).group(1)
-            self.Passport_ID = search(r"(?<=pid:)(.*?)((=?\s)|(=?$))", rawpassport).group(1)
-            # try:
-            #     self.Country_ID = search(r"(?<=cid:)(.*?)(=?\s)", rawpassport).group(1)
-            # except AttributeError:
-            #     pass
-            self.invalid = False
-        except AttributeError:
-            self.invalid = True
-
-    def validate(self):
-        if self.invalid or not (
-            len(self.Birth_Year) > 1 and
-            len(self.Expiration_Year) > 1 and
-            len(self.Issue_Year) > 1 and
-            len(self.Height) > 1 and
-            len(self.Hair_Color) > 1 and
-            len(self.Eye_Color) > 1 and
-            len(self.Passport_ID) > 1
-        ):
-            return False
-        else:
-            return True
