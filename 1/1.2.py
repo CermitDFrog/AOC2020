@@ -4,7 +4,6 @@ from sys import path as syspath
 
 with open(ospath.join(syspath[0], 'input'), 'r') as file:
     inputdata = [int(line.strip()) for line in file]
-inputdata.sort()
 
 
 def answer():
