@@ -1,6 +1,5 @@
 #!python
-from os import path as ospath
-from sys import path as syspath
+from helpers import iter_input
 
 
 def validate(passline):
@@ -13,10 +12,9 @@ def validate(passline):
         return False
 
 
-with open(ospath.join(syspath[0], 'input'), 'r') as file:
-    count = 0
-    lines = 0
-    for line in file:
-        if validate(line):
-            count += 1
-    print(count)
+count = 0
+lines = 0
+for line in iter_input(2):
+    if validate(line):
+        count += 1
+print(count)

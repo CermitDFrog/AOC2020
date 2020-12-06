@@ -1,9 +1,7 @@
 #!python
-from os import path as ospath
-from sys import path as syspath
+from helpers import iter_input
 
-with open(ospath.join(syspath[0], 'input'), 'r') as file:
-    inputdata = [int(line.strip()) for line in file]
+inputdata = [int(line.strip()) for line in iter_input(1)]
 
 
 def answer():

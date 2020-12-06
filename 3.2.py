@@ -1,15 +1,13 @@
 #!python
-from os import path as ospath
-from sys import path as syspath
+from helpers import iter_input
 
 
 class treemap():
 
     def __init__(self):
-        with open(ospath.join(syspath[0], 'input'), 'r') as file:
-            self.fullmap = []
-            for line in file:
-                self.fullmap.append(line.strip("\n"))
+        self.fullmap = []
+        for line in iter_input(3):
+            self.fullmap.append(line.strip("\n"))
         self.mapWidth = len(self.fullmap[0])
         self.maplen = len(self.fullmap)
 
