@@ -5,16 +5,18 @@ input_data = []
 for item in iter_input(7):
     input_data.append(item)
 
-containers = []
-def getContainers(bagtype):
-    for item in input_data:
-        bag, contents = item.split("s contain ")
-        if bagtype in contents:
-            if bag not in containers:
-                containers.append(bag)
+def solveSeven():
+    containers = ["shiny gold bag"]
+    def getContainers():
+        containers
+        for bagtype in containers:
+            for item in input_data:
+                bag, contents = item.split("s contain ")
+                if bagtype in contents:
+                    if bag not in containers:
+                        containers.append(bag)
+    getContainers()
+    containers.pop(0)
+    return len(containers)
 
-
-getContainers('shiny gold bag')
-for bag in containers:
-    getContainers(bag)
-print(len(containers))
+print(solveSeven())
