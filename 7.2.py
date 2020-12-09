@@ -1,5 +1,5 @@
 #!python3
-from helpers import iter_test, iter_input
+from helpers import iter_input
 
 "shiny gold bags contain 1 dark olive bag, 2 vibrant plum bags."
 

@@ -4,6 +4,7 @@ def iter_input(day: int):
     for line in _iter_webdata(day):
         yield line.strip('\n')
 
+
 def iter_group(day: int):
     groupraw = ''
     for line in _iter_webdata(day):
@@ -43,6 +44,7 @@ def _iter_file():
     with open(ospath.join(syspath[0], 'testdata'), 'r') as file:
         for line in file:
             yield line
+
 
 def _iter_webdata(day: int):
     import requests
